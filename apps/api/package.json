@@ -5,6 +5,7 @@
     "dev": "pnpm env:load tsx watch src/http/server.ts",
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
+    "db:seed": "pnpm env:load prisma db seed",
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
@@ -28,7 +29,7 @@
     "@saas/tsconfig": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.12.6",
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^7.4.1",
     "prisma": "^5.17.0",
     "tsx": "^4.7.2"
   },

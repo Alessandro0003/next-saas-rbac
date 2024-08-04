@@ -38,7 +38,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       )
       githubOAuthURL.searchParams.set(
         'redirect_uri',
-        env.GITHUB_OAUTH_REDIRECT_URI,
+        env.GITHUB_OAUTH_CLIENT_REDIRECT_URI,
       )
       githubOAuthURL.searchParams.set('code', code)
 
@@ -77,7 +77,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
         id: githubId,
         name,
         email,
-        avatar_url: avatarUtl,
+        avatar_url: avatarUrl,
       } = z
         .object({
           id: z.number().int().transform(String),
@@ -104,7 +104,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
           data: {
             name,
             email,
-            avatarUtl,
+            avatarUrl,
           },
         })
       }
