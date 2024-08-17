@@ -1,14 +1,13 @@
 import { organizationSchema } from '@saas/auth'
-import { FastifyInstance } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { auth } from '@/http/middlewares/auth'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils/get-user-permissions'
-
-import { BadRequestError } from '../_errors/bad-request-error'
-import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export async function updateOrganization(app: FastifyInstance) {
   app
@@ -18,7 +17,7 @@ export async function updateOrganization(app: FastifyInstance) {
       '/organizations/:slug/details',
       {
         schema: {
-          tags: ['organization'],
+          tags: ['Organizations'],
           summary: 'Update organization details',
           security: [{ bearerAuth: [] }],
           body: z.object({
@@ -35,15 +34,14 @@ export async function updateOrganization(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const { slug } = await request.params
-
+        const { slug } = request.params
         const userId = await request.getCurrentUserId()
         const { membership, organization } =
           await request.getUserMembership(slug)
 
         const { name, domain, shouldAttachUsersByDomain } = request.body
 
-        const authOrganization = organizationSchema.parse({ organization })
+        const authOrganization = organizationSchema.parse(organization)
 
         const { cannot } = getUserPermissions(userId, membership.role)
 
