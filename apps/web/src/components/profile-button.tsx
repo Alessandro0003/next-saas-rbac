@@ -1,6 +1,8 @@
-import { ChevronDown } from 'lucide-react'
-import Link from 'next/link'
+import { ChevronDown, LogOut } from 'lucide-react'
 
+import { auth } from '@/auth/auth'
+
+import { getInitialsName } from '../lib/get-initials-name'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
@@ -9,25 +11,30 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 
-export function ProfileButton() {
+export async function ProfileButton() {
+  const { user } = await auth()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-3 outline-none">
         <div className="flex flex-col items-end">
-          <span className="text-sm font-medium">John Doe</span>
-          <span className="text-xs text-muted-foreground">
-            johndoe@acme.com
-          </span>
+          <span className="text-sm font-medium">{user.name}</span>
+          <span className="text-xs text-muted-foreground">{user.email}</span>
         </div>
         <Avatar className="">
-          <AvatarImage src="https://github.com/Alessandro0003.png" />
-          <AvatarFallback>JD</AvatarFallback>
+          {user.avatarUrl && <AvatarImage src={user.avatarUrl} />}
+          {user.name && (
+            <AvatarFallback>{getInitialsName(user.name)}</AvatarFallback>
+          )}
         </Avatar>
         <ChevronDown className="size-4 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href="/api/auth/sign-out">Sign Out</Link>
+          <a href="/api/auth/sign-out">
+            <LogOut className="mr-2 size-4" />
+            Sign Out
+          </a>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
