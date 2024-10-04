@@ -1,8 +1,9 @@
 import { ChevronsUpDown, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
+import React from 'react'
 
 import { getCurrentOrg } from '@/auth/auth'
-import { getOrganization } from '@/http/organizations/get-organizations'
+import { getOrganizations } from '@/http/organizations/get-organizations'
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
@@ -17,7 +18,7 @@ import {
 
 export async function OrganizationSwitcher() {
   const currentOrg = getCurrentOrg()
-  const { organizations } = await getOrganization()
+  const { organizations } = await getOrganizations()
   const currentOrganization = organizations.find(
     (org) => org.slug === currentOrg,
   )
