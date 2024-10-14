@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import { updateMemberAction } from './actions'
+import { updateMemberAction } from '../actions'
 interface UpdateMemberRoleSelectProps extends ComponentProps<typeof Select> {
   memberId: string
 }
