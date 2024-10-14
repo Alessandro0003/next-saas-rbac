@@ -12,7 +12,7 @@ import { getMembership } from '@/http/organizations/get-membership'
 import { getOrganization } from '@/http/organizations/get-organization'
 
 import { removeMemberAction } from './actions'
-import { UpdateMemberRoleSelect } from './update-member-role-select'
+import { UpdateMemberRoleSelect } from './components/update-member-role-select'
 
 export async function MemberList() {
   const currentOrg = getCurrentOrg()
