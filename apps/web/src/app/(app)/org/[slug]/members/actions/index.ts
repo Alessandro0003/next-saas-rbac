@@ -4,6 +4,7 @@ import { Role } from '@saas/auth'
 import { revalidateTag } from 'next/cache'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { revokeInvite } from '@/http/invites/revoke-invite'
 import { removeMembers } from '@/http/members/remove-members'
 import { updateMembers } from '@/http/members/update-member'
 
@@ -26,4 +27,15 @@ export async function updateMemberAction(memberId: string, role: Role) {
   })
 
   revalidateTag(`${currentOrg}/members`)
+}
+
+export async function revokeInviteAction(inviteId: string) {
+  const currentOrg = getCurrentOrg()
+
+  await revokeInvite({
+    org: currentOrg!,
+    inviteId,
+  })
+
+  revalidateTag(`${currentOrg}/invites`)
 }
