@@ -70,7 +70,7 @@ export async function getMembers(app: FastifyInstance) {
             organizationId: organization.id,
           },
           orderBy: {
-            role: 'desc',
+            role: 'asc',
           },
         })
 
