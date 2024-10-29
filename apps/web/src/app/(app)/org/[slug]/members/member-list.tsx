@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getMembers } from '@/http/members/get-members'
 import { getMembership } from '@/http/organizations/get-membership'
 import { getOrganization } from '@/http/organizations/get-organization'
+import { getInitialsName } from '@/lib/get-initials-name'
 
 import { removeMemberAction } from './actions'
 import { UpdateMemberRoleSelect } from './components/update-member-role-select'
@@ -39,7 +40,7 @@ export async function MemberList() {
                   <TableCell className="py-2.5" style={{ width: 48 }}>
                     <Avatar>
                       <AvatarFallback />
-                      {member.avatarUrl && (
+                      {member.avatarUrl ? (
                         <Image
                           src={member.avatarUrl}
                           width={32}
@@ -47,6 +48,10 @@ export async function MemberList() {
                           alt=""
                           className="aspect-square size-full"
                         />
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
+                          {getInitialsName(member.name || '')}
+                        </span>
                       )}
                     </Avatar>
                   </TableCell>
