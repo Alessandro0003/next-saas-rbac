@@ -1,3 +1,5 @@
+'use server'
+
 import { revalidateTag } from 'next/cache'
 
 import { acceptInvite } from '@/http/invites/accept-invite'
