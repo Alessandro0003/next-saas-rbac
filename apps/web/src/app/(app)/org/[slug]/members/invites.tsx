@@ -1,10 +1,10 @@
 import { ability, getCurrentOrg } from '@/auth/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { getInvites } from '@/http/invites/get-invites'
+import { getInvites } from '@/http/get-invites'
 
-import { CreateInviteForm } from './components/form/create-invite-form'
-import { RevokeInviteButton } from './components/revoke-invite-button'
+import { CreateInviteForm } from './create-invite-form'
+import { RevokeInviteButton } from './revoke-invite-button'
 
 export async function Invites() {
   const currentOrg = getCurrentOrg()
@@ -39,12 +39,10 @@ export async function Invites() {
                         {invite.email}
                       </span>
                     </TableCell>
-
                     <TableCell className="py-2.5 font-medium">
                       {invite.role}
                     </TableCell>
-
-                    <TableCell className="PY-2.5">
+                    <TableCell className="py-2.5">
                       <div className="flex justify-end">
                         {permissions?.can('delete', 'Invite') && (
                           <RevokeInviteButton inviteId={invite.id} />
@@ -58,7 +56,7 @@ export async function Invites() {
               {invites.length === 0 && (
                 <TableRow>
                   <TableCell className="text-center text-muted-foreground">
-                    No invites found.
+                    No invites found
                   </TableCell>
                 </TableRow>
               )}

@@ -1,19 +1,17 @@
-import { AvatarFallback } from '@radix-ui/react-avatar'
 import { organizationSchema } from '@saas/auth'
 import { ArrowLeftRight, Crown, UserMinus } from 'lucide-react'
 import Image from 'next/image'
 
 import { ability, getCurrentOrg } from '@/auth/auth'
-import { Avatar } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { getMembers } from '@/http/members/get-members'
-import { getMembership } from '@/http/organizations/get-membership'
-import { getOrganization } from '@/http/organizations/get-organization'
-import { getInitialsName } from '@/lib/get-initials-name'
+import { getMembers } from '@/http/get-members'
+import { getMembership } from '@/http/get-membership'
+import { getOrganization } from '@/http/get-organization'
 
 import { removeMemberAction } from './actions'
-import { UpdateMemberRoleSelect } from './components/update-member-role-select'
+import { UpdateMemberRoleSelect } from './update-member-role-select'
 
 export async function MemberList() {
   const currentOrg = getCurrentOrg()
@@ -40,7 +38,7 @@ export async function MemberList() {
                   <TableCell className="py-2.5" style={{ width: 48 }}>
                     <Avatar>
                       <AvatarFallback />
-                      {member.avatarUrl ? (
+                      {member.avatarUrl && (
                         <Image
                           src={member.avatarUrl}
                           width={32}
@@ -48,14 +46,9 @@ export async function MemberList() {
                           alt=""
                           className="aspect-square size-full"
                         />
-                      ) : (
-                        <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                          {getInitialsName(member.name || '')}
-                        </span>
                       )}
                     </Avatar>
                   </TableCell>
-
                   <TableCell className="py-2.5">
                     <div className="flex flex-col">
                       <span className="inline-flex items-center gap-2 font-medium">
@@ -73,8 +66,7 @@ export async function MemberList() {
                       </span>
                     </div>
                   </TableCell>
-
-                  <TableCell className="PY-2.5">
+                  <TableCell className="py-2.5">
                     <div className="flex items-center justify-end gap-2">
                       {permissions?.can(
                         'transfer_ownership',

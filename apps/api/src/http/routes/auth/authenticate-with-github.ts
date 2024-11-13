@@ -1,19 +1,18 @@
 import { env } from '@saas/env'
-import { FastifyInstance } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-
-import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function authenticateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/sessions/github',
     {
       schema: {
-        tags: ['auth'],
-        summary: 'Authenticate with Github',
+        tags: ['Auth'],
+        summary: 'Authenticate with GitHub',
         body: z.object({
           code: z.string(),
         }),
@@ -28,7 +27,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       const { code } = request.body
 
       const githubOAuthURL = new URL(
-        `https://github.com/login/oauth/access_token`,
+        'https://github.com/login/oauth/access_token',
       )
 
       githubOAuthURL.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID)
@@ -94,16 +93,14 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       }
 
       let user = await prisma.user.findUnique({
-        where: {
-          email,
-        },
+        where: { email },
       })
 
       if (!user) {
         user = await prisma.user.create({
           data: {
-            name,
             email,
+            name,
             avatarUrl,
           },
         })

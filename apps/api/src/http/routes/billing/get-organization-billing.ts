@@ -62,7 +62,6 @@ export async function getOrganizationBilling(app: FastifyInstance) {
               role: { not: 'BILLING' },
             },
           }),
-
           prisma.project.count({
             where: {
               organizationId: organization.id,

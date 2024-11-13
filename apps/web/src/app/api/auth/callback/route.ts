@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { acceptInvite } from '@/http/invites/accept-invite'
-import { signInWithGithub } from '@/http/signIn/sign-in-with-github'
+import { acceptInvite } from '@/http/accept-invite'
+import { signInWithGithub } from '@/http/sign-in-with-github'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   if (!code) {
     return NextResponse.json(
-      { message: 'GitHub OAuth code was not found.' },
+      { message: 'Github OAuth  code was not found.' },
       { status: 400 },
     )
   }
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
   cookies().set('token', token, {
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7, // 7days
   })
 
   const inviteId = cookies().get('inviteId')?.value

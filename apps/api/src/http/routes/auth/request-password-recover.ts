@@ -9,8 +9,8 @@ export async function requestPasswordRecover(app: FastifyInstance) {
     '/password/recover',
     {
       schema: {
-        tags: ['password-recover'],
-        summary: 'Password recover',
+        tags: ['Auth'],
+        summary: 'Get authenticated user profile',
         body: z.object({
           email: z.string().email(),
         }),
@@ -23,13 +23,11 @@ export async function requestPasswordRecover(app: FastifyInstance) {
       const { email } = request.body
 
       const userFromEmail = await prisma.user.findUnique({
-        where: {
-          email,
-        },
+        where: { email },
       })
 
       if (!userFromEmail) {
-        // will be returned this way because, we don't want people to know if the user actually exists
+        // We don't want to people to know if the user really exists
         return reply.status(201).send()
       }
 
@@ -42,7 +40,7 @@ export async function requestPasswordRecover(app: FastifyInstance) {
 
       // Send e-mail with password recover link
 
-      console.log('Recover password token: ', code)
+      console.log('Password recover token:', code)
 
       return reply.status(201).send()
     },

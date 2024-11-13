@@ -9,8 +9,8 @@ import { auth, isAuthenticated } from '@/auth/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { acceptInvite } from '@/http/invites/accept-invite'
-import { getInvite } from '@/http/invites/get-invite'
+import { acceptInvite } from '@/http/accept-invite'
+import { getInvite } from '@/http/get-invite'
 
 dayjs.extend(relativeTime)
 
@@ -34,12 +34,14 @@ export default async function InvitePage({ params }: InvitePageProps) {
     currentUserEmail = user.email
   }
 
-  const userUsAuthenticatedWithSameEmailFromInvite =
+  const userIsAuthenticatedWithSameEmailFromInvite =
     currentUserEmail === invite.email
 
   async function signInFromInvite() {
     'use server'
+
     cookies().set('inviteId', inviteId)
+
     redirect(`/auth/sign-in?email=${invite.email}`)
   }
 
@@ -55,12 +57,11 @@ export default async function InvitePage({ params }: InvitePageProps) {
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="flex w-full max-w-sm flex-col justify-center space-y-6">
         <div className="flex flex-col items-center space-y-4">
-          <Avatar className="h-16 w-16">
-            {invite.author?.avatarUrl ? (
+          <Avatar className="size-16">
+            {invite.author?.avatarUrl && (
               <AvatarImage src={invite.author.avatarUrl} />
-            ) : (
-              <AvatarFallback />
             )}
+            <AvatarFallback />
           </Avatar>
 
           <p className="text-balance text-center leading-relaxed text-muted-foreground">
@@ -69,7 +70,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
             </span>{' '}
             invited you to join{' '}
             <span className="font-medium text-foreground">
-              {invite.organization?.name ?? 'the organization'}
+              {invite.organization.name}
             </span>
             .{' '}
             <span className="text-xs">{dayjs(invite.createdAt).fromNow()}</span>
@@ -82,12 +83,12 @@ export default async function InvitePage({ params }: InvitePageProps) {
           <form action={signInFromInvite}>
             <Button type="submit" variant="secondary" className="w-full">
               <LogIn className="mr-2 size-4" />
-              Sign in to accpet the invite
+              Sign in to accept the invite
             </Button>
           </form>
         )}
 
-        {userUsAuthenticatedWithSameEmailFromInvite && (
+        {userIsAuthenticatedWithSameEmailFromInvite && (
           <form action={acceptInviteAction}>
             <Button type="submit" variant="secondary" className="w-full">
               <CheckCircle className="mr-2 size-4" />
@@ -96,14 +97,14 @@ export default async function InvitePage({ params }: InvitePageProps) {
           </form>
         )}
 
-        {isUserAuthenticated && !userUsAuthenticatedWithSameEmailFromInvite && (
+        {isUserAuthenticated && !userIsAuthenticatedWithSameEmailFromInvite && (
           <div className="space-y-4">
             <p className="text-balance text-center text-sm leading-relaxed text-muted-foreground">
               This invite was sent to{' '}
               <span className="font-medium text-foreground">
-                {invite.email}{' '}
-              </span>
-              but you are currenly authenticated as{' '}
+                {invite.email}
+              </span>{' '}
+              but you are currently authenticated as{' '}
               <span className="font-medium text-foreground">
                 {currentUserEmail}
               </span>

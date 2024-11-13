@@ -1,11 +1,11 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { ChevronsUpDown, PlusCircle } from 'lucide-react'
+import { ChevronsUpDown, Loader2, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
-import { getProjects } from '@/http/projects/get-projects'
+import { getProjects } from '@/http/get-projects'
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
@@ -38,11 +38,11 @@ export function ProjectSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-[164px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:right-2 focus-visible:ring-primary">
+      <DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {isLoading ? (
           <>
-            <Skeleton className="size-4 shrink-0 rounded-full" />
-            <Skeleton className="h-4 w-full" />
+            <Skeleton className="size-4 rounded-full" />
+            <Skeleton className="h-4 w-full flex-1" />
           </>
         ) : (
           <>
@@ -63,10 +63,9 @@ export function ProjectSwitcher() {
             )}
           </>
         )}
+
         {isLoading ? (
-          <>
-            <Skeleton className="size-4 shrink-0 rounded-full" />
-          </>
+          <Loader2 className="ml-auto size-4 shrink-0 animate-spin text-muted-foreground" />
         ) : (
           <ChevronsUpDown className="ml-auto size-4 shrink-0 text-muted-foreground" />
         )}
@@ -74,19 +73,15 @@ export function ProjectSwitcher() {
       <DropdownMenuContent
         align="end"
         alignOffset={-16}
-        className="w-[200px]"
         sideOffset={12}
+        className="w-[200px]"
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>Projects</DropdownMenuLabel>
           {data &&
             data.projects.map((project) => {
               return (
-                <DropdownMenuItem
-                  key={project.id}
-                  className="cursor-pointer"
-                  asChild
-                >
+                <DropdownMenuItem key={project.id} asChild>
                   <Link href={`/org/${orgSlug}/project/${project.slug}`}>
                     <Avatar className="mr-2 size-4">
                       {project.avatarUrl && (
@@ -101,10 +96,10 @@ export function ProjectSwitcher() {
             })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer" asChild>
+        <DropdownMenuItem asChild>
           <Link href={`/org/${orgSlug}/create-project`}>
             <PlusCircle className="mr-2 size-4" />
-            Create New
+            Create new
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

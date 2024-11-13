@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { getProjects } from '@/http/projects/get-projects'
+import { getProjects } from '@/http/get-projects'
 
 dayjs.extend(relativeTime)
 
@@ -40,15 +40,16 @@ export async function ProjectList() {
                 )}
                 <AvatarFallback />
               </Avatar>
+
               <span className="truncate text-xs text-muted-foreground">
                 <span className="font-medium text-foreground">
-                  {project.owner.name} {''}
-                </span>
+                  {project.owner.name}
+                </span>{' '}
                 {dayjs(project.createdAt).fromNow()}
               </span>
 
               <Button size="xs" variant="outline" className="ml-auto">
-                View <ArrowRight className="ml-3 size-3" />
+                View <ArrowRight className="ml-2 size-3" />
               </Button>
             </CardFooter>
           </Card>

@@ -6,11 +6,11 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { Check, UserPlus2, X } from 'lucide-react'
 import { useState } from 'react'
 
-import { getPendingInvites } from '@/http/invites/get-pending-invites'
+import { getPendingInvites } from '@/http/get-pending-invites'
 
 import { Button } from '../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { acceptInviteAction, rejectInviteAction } from './action'
+import { acceptInviteAction, rejectInviteAction } from './actions'
 
 dayjs.extend(relativeTime)
 
@@ -38,7 +38,7 @@ export function PendingInvites() {
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button size="icon" variant="ghost">
           <UserPlus2 className="size-4" />
           <span className="sr-only">Pending invites</span>
@@ -47,7 +47,7 @@ export function PendingInvites() {
 
       <PopoverContent className="w-80 space-y-2">
         <span className="block text-sm font-medium">
-          Pending invites ({data?.invites.length ?? 0})
+          Pending Invites ({data?.invites.length ?? 0})
         </span>
 
         {data?.invites.length === 0 && (
@@ -56,7 +56,7 @@ export function PendingInvites() {
 
         {data?.invites.map((invite) => {
           return (
-            <div className="space-y-2">
+            <div key={invite.id} className="space-y-2">
               <p className="text-sm leading-relaxed text-muted-foreground">
                 <span className="font-medium text-foreground">
                   {invite.author?.name ?? 'Someone'}
@@ -68,7 +68,7 @@ export function PendingInvites() {
                 <span>{dayjs(invite.createdAt).fromNow()}</span>
               </p>
 
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 <Button
                   onClick={() => handleAcceptInvite(invite.id)}
                   size="xs"

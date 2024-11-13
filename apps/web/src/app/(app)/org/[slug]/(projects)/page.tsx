@@ -19,7 +19,7 @@ export default async function Projects() {
           <Button size="sm" asChild>
             <Link href={`/org/${currentOrg}/create-project`}>
               <Plus className="mr-2 size-4" />
-              Create Project
+              Create project
             </Link>
           </Button>
         )}

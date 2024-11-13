@@ -13,14 +13,14 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useFormState } from '@/hooks/use-form-state'
 
-import { signInWithGithub } from '../action'
-import { signUpActions } from './actions'
+import { signInWithGithub } from '../actions'
+import { signUpAction } from './actions'
 
 export function SignUpForm() {
   const router = useRouter()
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
-    signUpActions,
+    signUpAction,
     () => {
       router.push('/auth/sign-in')
     },
@@ -40,7 +40,7 @@ export function SignUpForm() {
         )}
 
         <div className="space-y-1">
-          <Label htmlFor="name">Nome</Label>
+          <Label htmlFor="name">Name</Label>
           <Input name="name" id="name" />
 
           {errors?.name && (
@@ -87,7 +87,7 @@ export function SignUpForm() {
           )}
         </div>
 
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isPending}>
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
@@ -101,16 +101,19 @@ export function SignUpForm() {
 
         <Separator />
 
-        <form action={signInWithGithub}>
-          <Button type="submit" className="w-full" variant="outline">
-            <Image
-              src={githubIcon}
-              alt=""
-              className="mr-2 size-4 dark:invert"
-            />
-            Sign up with GitHub
-          </Button>
-        </form>
+        <Button type="submit" className="w-full" variant="outline">
+          <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
+          Sign up with GitHub
+        </Button>
+      </form>
+
+      <Separator />
+
+      <form action={signInWithGithub}>
+        <Button type="submit" className="w-full" variant="outline">
+          <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
+          Sign up with GitHub
+        </Button>
       </form>
     </div>
   )

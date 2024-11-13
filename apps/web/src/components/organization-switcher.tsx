@@ -1,9 +1,8 @@
 import { ChevronsUpDown, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
 
 import { getCurrentOrg } from '@/auth/auth'
-import { getOrganizations } from '@/http/organizations/get-organizations'
+import { getOrganizations } from '@/http/get-organizations'
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
@@ -18,14 +17,16 @@ import {
 
 export async function OrganizationSwitcher() {
   const currentOrg = getCurrentOrg()
+
   const { organizations } = await getOrganizations()
+
   const currentOrganization = organizations.find(
     (org) => org.slug === currentOrg,
   )
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-[164px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:right-2 focus-visible:ring-primary">
+      <DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {currentOrganization ? (
           <>
             <Avatar className="size-4">
@@ -46,30 +47,32 @@ export async function OrganizationSwitcher() {
       <DropdownMenuContent
         align="end"
         alignOffset={-16}
-        className="w-[200px]"
         sideOffset={12}
+        className="w-[200px]"
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>Organizations</DropdownMenuLabel>
-          {organizations.map((org) => {
+          {organizations.map((organization) => {
             return (
-              <DropdownMenuItem key={org.id} className="cursor-pointer" asChild>
-                <Link href={`/org/${org.slug}`}>
+              <DropdownMenuItem key={organization.id} asChild>
+                <Link href={`/org/${organization.slug}`}>
                   <Avatar className="mr-2 size-4">
-                    {org.avatarUrl && <AvatarImage src={org.avatarUrl} />}
+                    {organization.avatarUrl && (
+                      <AvatarImage src={organization.avatarUrl} />
+                    )}
                     <AvatarFallback />
                   </Avatar>
-                  <span className="line-clamp-1">{org.name}</span>
+                  <span className="line-clamp-1">{organization.name}</span>
                 </Link>
               </DropdownMenuItem>
             )
           })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer" asChild>
+        <DropdownMenuItem asChild>
           <Link href="/create-organization">
             <PlusCircle className="mr-2 size-4" />
-            Create New
+            Create new
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
