@@ -88,7 +88,7 @@ Roles & permissions.
 - Member
 - Billing (one per organization)
 - Anonymous
-🔥...
+🔥....
 
 ### Permissions table
 
