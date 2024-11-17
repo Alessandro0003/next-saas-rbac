@@ -14,13 +14,13 @@ import { Separator } from '@/components/ui/separator'
 import { useFormState } from '@/hooks/use-form-state'
 
 import { signInWithGithub } from '../actions'
-import { signUpAction } from './actions'
+import { signUpActions } from './actions'
 
 export function SignUpForm() {
   const router = useRouter()
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
-    signUpAction,
+    signUpActions,
     () => {
       router.push('/auth/sign-in')
     },
