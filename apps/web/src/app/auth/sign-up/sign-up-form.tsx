@@ -98,13 +98,6 @@ export function SignUpForm() {
         <Button className="w-full" variant="link" size="sm" asChild>
           <Link href="/auth/sign-in">Already registered? Sign In</Link>
         </Button>
-
-        <Separator />
-
-        <Button type="submit" className="w-full" variant="outline">
-          <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
-          Sign up with GitHub
-        </Button>
       </form>
 
       <Separator />
