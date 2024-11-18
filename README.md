@@ -119,3 +119,4 @@ Roles & permissions.
 - Only administrators and project authors may update/delete the project;
 - Members can leave their own organization;
 - Members can leave their own organization;
+..
